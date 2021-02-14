@@ -62,36 +62,27 @@ ORDER BY em.emp_no ASC
 -- SELECT * FROM titles
 -- 
 --The Employees Eligible for the Mentorship Program END
--- Generate a list of employee by title that started on or after 1999-12-31
+-- Group by job title employee that will retire soon
 SELECT 
-	COUNT(me.emp_no),
-	SUM(sa.salary)/COUNT(me.emp_no) AS "Average Salary",
-	d.dept_name
-FROM mentorship_eligibilty as me
-INNER JOIN salaries AS sa
-ON (me.emp_no = sa.emp_no) 
-INNER JOIN dept_emp AS de
-ON (me.emp_no = de.emp_no)
-INNER JOIN departments AS d
-ON (de.dep_no = d.dept_no)
-WHERE me.from_date >= '19991231'
-GROUP BY d.dept_no
-ORDER BY COUNT(me.emp_no) DESC
-
--- Generate a group by title and the average salary
+	COUNT(rt.emp_no),
+    rt.title
+FROM retirement_titles as rt
+GROUP BY rt.title
+ORDER BY COUNT(rt.emp_no) DESC
+-- Group by job title employee that will retire soon
 SELECT 
-	COUNT(me.emp_no),
-	SUM(sa.salary)/COUNT(me.emp_no) AS "Average Salary",
+	COUNT(ut.emp_no),
+	SUM(sa.salary)/COUNT(ut.emp_no) AS "Average Salary",
 	d.dept_name
-FROM mentorship_eligibilty as me
+FROM unique_titles as ut
 INNER JOIN salaries AS sa
-ON (me.emp_no = sa.emp_no) 
+ON (ut.emp_no = sa.emp_no) 
 INNER JOIN dept_emp AS de
-ON (me.emp_no = de.emp_no)
+ON (ut.emp_no = de.emp_no)
 INNER JOIN departments AS d
 ON (de.dep_no = d.dept_no)
 GROUP BY d.dept_no
-ORDER BY COUNT(me.emp_no) DESC
+ORDER BY COUNT(ut.emp_no) DESC
 
-SELECT * FROM departments
+
 
